@@ -1,9 +1,8 @@
-
 pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'YOUR_DOCKERHUB_USERNAME/inventory-management-system'
+        IMAGE_NAME = 'tejaswani2028/inventory-management-system'
     }
 
     stages {
