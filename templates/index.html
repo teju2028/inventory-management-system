@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Inventory Dashboard</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; background: #f3f6fa; color: #222; }
+        nav { background: #172554; padding: 18px; }
+        nav a { color: white; margin-right: 20px; text-decoration: none; }
+        main { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .cards { display: flex; gap: 16px; flex-wrap: wrap; }
+        .card { background: white; padding: 22px; border-radius: 10px; flex: 1; min-width: 160px; box-shadow: 0 2px 8px #ddd; }
+        .number { font-size: 28px; font-weight: bold; color: #1d4ed8; }
+        table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #e0e7ff; }
+        .warning { color: #b91c1c; font-weight: bold; }
+        .action { display: inline-block; background: #1d4ed8; color: white; padding: 10px 14px; border-radius: 5px; text-decoration: none; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/products">Products</a>
+    <a href="/add">Add Product</a>
+</nav>
+<main>
+    <h1>Inventory Management Dashboard</h1>
+    <p>Monitor your products and stock levels.</p>
+
+    <div class="cards">
+        <div class="card">
+            <p>Total Products</p>
+            <div class="number">{{ total_products }}</div>
+        </div>
+        <div class="card">
+            <p>Total Units in Stock</p>
+            <div class="number">{{ total_stock }}</div>
+        </div>
+        <div class="card">
+            <p>Low Stock Products</p>
+            <div class="number">{{ low_stock }}</div>
+        </div>
+    </div>
+
+    <h2>Recently Added Products</h2>
+    <a class="action" href="/add">+ Add New Product</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Price (₹)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in products %}
+            <tr>
+                <td>{{ p.name }}</td>
+                <td>{{ p.category }}</td>
+                <td>{{ p.quantity }}</td>
+                <td>{{ "%.2f"|format(p.price) }}</td>
+                <td>
+                    {% if p.quantity <= p.min_stock %}
+                        <span class="warning">Low Stock</span>
+                    {% else %}
+                        Available
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="5">No products added yet.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
+</body>
+</html>

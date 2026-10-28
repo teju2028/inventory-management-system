@@ -1,0 +1,67 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>All Products</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f3f6fa; margin: 0; }
+        nav { background: #172554; padding: 18px; }
+        nav a { color: white; margin-right: 20px; text-decoration: none; }
+        main { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        table { width: 100%; border-collapse: collapse; background: white; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #e0e7ff; }
+        .warning { color: #b91c1c; font-weight: bold; }
+        .action { display: inline-block; background: #1d4ed8; color: white; padding: 10px 14px; text-decoration: none; border-radius: 5px; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="/">Dashboard</a>
+    <a href="/products">Products</a>
+    <a href="/add">Add Product</a>
+</nav>
+<main>
+    <h1>All Products</h1>
+    <p>View your complete inventory.</p>
+    <p><a class="action" href="/add">+ Add Product</a></p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Quantity</th>
+                <th>Price (₹)</th>
+                <th>Minimum Stock</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for p in products %}
+            <tr>
+                <td>{{ p.id }}</td>
+                <td>{{ p.name }}</td>
+                <td>{{ p.category }}</td>
+                <td>{{ p.quantity }}</td>
+                <td>{{ "%.2f"|format(p.price) }}</td>
+                <td>{{ p.min_stock }}</td>
+                <td>
+                    {% if p.quantity <= p.min_stock %}
+                        <span class="warning">Low Stock</span>
+                    {% else %}
+                        Available
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr><td colspan="7">No products found. Add your first product.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
+</body>
+</html>
